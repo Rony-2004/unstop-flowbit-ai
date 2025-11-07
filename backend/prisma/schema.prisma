@@ -1,0 +1,131 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Document {
+  id             String   @id @default(cuid())
+  externalId     String   @unique
+  name           String
+  filePath       String
+  fileSize       String
+  fileType       String
+  status         String
+  organizationId String
+  departmentId   String
+  createdAt      DateTime
+  updatedAt      DateTime
+  processedAt    DateTime?
+  analyticsId    String?
+
+  // Relations
+  invoice        Invoice?
+  vendor         Vendor?
+  customer       Customer?
+  payment        Payment?
+  summary        Summary?
+  lineItems      LineItem[]
+
+  @@map("documents")
+}
+
+model Invoice {
+  id            String   @id @default(cuid())
+  documentId    String   @unique
+  invoiceId     String
+  invoiceDate   DateTime
+  deliveryDate  DateTime?
+
+  // Relations
+  document      Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@map("invoices")
+}
+
+model Vendor {
+  id             String  @id @default(cuid())
+  documentId     String  @unique
+  vendorName     String
+  vendorAddress  String
+  vendorTaxId    String?
+  vendorPartyNumber String?
+
+  // Relations
+  document       Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@map("vendors")
+}
+
+model Customer {
+  id               String  @id @default(cuid())
+  documentId       String  @unique
+  customerName     String
+  customerAddress  String
+  customerTaxId    String?
+
+  // Relations
+  document         Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@map("customers")
+}
+
+model Payment {
+  id                  String   @id @default(cuid())
+  documentId          String   @unique
+  dueDate             DateTime?
+  paymentTerms        String?
+  bankAccountNumber   String?
+  bic                 String?
+  accountName         String?
+  netDays             Int?
+  discountPercentage  Float?
+  discountDays        Int?
+  discountDueDate     DateTime?
+
+  // Relations
+  document            Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+model Summary {
+  id             String  @id @default(cuid())
+  documentId     String  @unique
+  documentType   String?
+  subTotal       Float
+  totalTax       Float
+  invoiceTotal   Float
+  currencySymbol String?
+
+  // Relations
+  document       Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@map("summaries")
+}
+
+model LineItem {
+  id           String  @id @default(cuid())
+  documentId   String
+  srNo         Int
+  description  String
+  quantity     Float
+  unitPrice    Float
+  totalPrice   Float
+  sachkonto    String?
+  buschluessel String?
+  vatRate      Float?
+  vatAmount    Float?
+
+  // Relations
+  document     Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
+  @@map("line_items")
+}
