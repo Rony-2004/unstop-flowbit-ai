@@ -71,11 +71,9 @@ cd unstop
 cd backend
 npm install
 
-# Create .env file with the following variables:
-DATABASE_URL=postgresql://neondb_owner:npg_xH2YzKIM7LRu@ep-rough-mouse-adkt7k0z-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
-GROQ_API_KEY=your_groq_api_key_here
-PORT=3001
-NODE_ENV=development
+# Copy example env file and fill in your credentials
+cp ../.env.example .env
+# Edit .env and add your DATABASE_URL and GROQ_API_KEY
 
 npx prisma generate
 npm run dev
@@ -88,8 +86,8 @@ Backend will run on `http://localhost:3001`
 cd frontend
 npm install
 
-# Create .env file:
-VITE_API_BASE_URL=http://localhost:3001/api
+# Create .env file
+echo "VITE_API_BASE_URL=http://localhost:3001/api" > .env
 
 npm run dev
 ```
@@ -340,6 +338,11 @@ User sees Results + SQL + Explanation
 ### Build and Run
 
 ```bash
+# Copy example env file and fill in your credentials
+cp .env.docker.example .env.docker
+# Edit .env.docker and add your DATABASE_URL and GROQ_API_KEY
+
+# Build and start
 docker compose --env-file .env.docker build
 docker compose --env-file .env.docker up -d
 docker compose ps
