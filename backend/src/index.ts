@@ -31,6 +31,22 @@ app.use((req, res, next) => {
   next();
 });
 
+// Root route
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Flowbit AI Backend API',
+    status: 'running',
+    version: '1.0.0',
+    endpoints: [
+      'GET /api/health',
+      'GET /api/stats',
+      'GET /api/vendors',
+      'GET /api/invoices',
+      'POST /api/chat-with-data'
+    ]
+  });
+});
+
 // Routes
 app.use('/api/stats', statsRouter);
 app.use('/api/invoice-trends', trendsRouter);
