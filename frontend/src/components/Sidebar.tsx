@@ -1,8 +1,10 @@
+'use client';
+
 import { LayoutDashboard, FileText, Folder, Building2, Users, Settings, MessageSquare } from "lucide-react";
 import { NavLink } from "./NavLink";
 
 const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard", path: "/", enabled: true },
+  { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard", enabled: true },
   { icon: MessageSquare, label: "Chat with Data", path: "/chat", enabled: true },
   { icon: FileText, label: "Invoice", path: "/invoice", enabled: false },
   { icon: Folder, label: "Other files", path: "/files", enabled: false },
@@ -30,7 +32,7 @@ export const Sidebar = () => {
           item.enabled ? (
             <NavLink
               key={item.path}
-              to={item.path}
+              href={item.path}
               className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
               activeClassName="bg-blue-600 text-white hover:bg-blue-600 hover:text-white"
             >

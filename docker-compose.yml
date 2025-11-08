@@ -6,10 +6,10 @@ services:
     container_name: flowbit-backend
     ports:
       - "3001:3001"
+    env_file:
+      - .env.docker
     environment:
-      - DATABASE_URL=${DATABASE_URL}
       - PORT=3001
-      - GROQ_API_KEY=${GROQ_API_KEY}
       - NODE_ENV=production
     restart: unless-stopped
     networks:
@@ -21,7 +21,9 @@ services:
       dockerfile: Dockerfile
     container_name: flowbit-frontend
     ports:
-      - "80:80"
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_BASE_URL=http://backend:3001/api
     depends_on:
       - backend
     restart: unless-stopped

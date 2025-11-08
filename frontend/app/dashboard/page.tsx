@@ -1,3 +1,5 @@
+'use client';
+
 import { useQuery } from "@tanstack/react-query";
 import { Sidebar } from "@/components/Sidebar";
 import { StatCard } from "@/components/StatCard";
@@ -8,7 +10,7 @@ import { InvoicesByVendorTable } from "@/components/InvoicesByVendorTable";
 import { TopVendorsChart } from "@/components/TopVendorsChart";
 import { apiService } from "@/services/api";
 
-const Index = () => {
+export default function DashboardPage() {
   const { data: stats, isLoading: statsLoading, error: statsError } = useQuery({
     queryKey: ['stats'],
     queryFn: apiService.getStats,
@@ -130,6 +132,4 @@ const Index = () => {
       </main>
     </div>
   );
-};
-
-export default Index;
+}

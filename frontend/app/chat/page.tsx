@@ -1,6 +1,8 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { apiService } from '@/services/api';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -18,8 +20,8 @@ interface ChatMessage {
   timestamp: Date;
 }
 
-export default function ChatWithData() {
-  const navigate = useNavigate();
+export default function ChatPage() {
+  const router = useRouter();
   const STORAGE_KEY = 'chat-history';
   
   const initialMessage: ChatMessage = {
@@ -30,6 +32,7 @@ export default function ChatWithData() {
   };
 
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
+    if (typeof window === 'undefined') return [initialMessage];
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
@@ -48,12 +51,16 @@ export default function ChatWithData() {
 
   // Save to localStorage whenever messages change
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    }
   }, [messages]);
 
   const clearHistory = () => {
     setMessages([initialMessage]);
-    localStorage.removeItem(STORAGE_KEY);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(STORAGE_KEY);
+    }
   };
 
   const exportToCSV = (data: Record<string, unknown>[], filename: string) => {
@@ -139,7 +146,7 @@ export default function ChatWithData() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate('/')}
+                onClick={() => router.push('/dashboard')}
                 className="gap-2"
               >
                 <ArrowLeft className="h-4 w-4" />

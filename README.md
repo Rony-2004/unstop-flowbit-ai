@@ -39,7 +39,7 @@ A production-grade full-stack web application for invoice data analytics and AI-
 - **Testing**: Jest + Supertest
 
 ### Frontend
-- **Framework**: React 18 + Vite
+- **Framework**: Next.js 15 (App Router)
 - **Language**: TypeScript
 - **Styling**: TailwindCSS + shadcn/ui
 - **State**: React Query (TanStack Query)
@@ -48,7 +48,7 @@ A production-grade full-stack web application for invoice data analytics and AI-
 
 ### DevOps
 - **Containerization**: Docker + Docker Compose
-- **Web Server**: Nginx (for frontend)
+- **Production Build**: Next.js Standalone Output
 
 ## Quick Start
 
@@ -86,13 +86,13 @@ Backend will run on `http://localhost:3001`
 cd frontend
 npm install
 
-# Create .env file
-echo "VITE_API_BASE_URL=http://localhost:3001/api" > .env
+# Create .env.local file
+echo "NEXT_PUBLIC_API_BASE_URL=http://localhost:3001/api" > .env.local
 
 npm run dev
 ```
 
-Frontend will run on `http://localhost:8080`
+Frontend will run on `http://localhost:3000`
 
 ## Database Schema
 
@@ -335,24 +335,38 @@ User sees Results + SQL + Explanation
 
 ## Docker Deployment
 
-### Build and Run
+### Prerequisites
+- Docker and Docker Compose installed
+- PostgreSQL database URL (Neon or your own)
+- Groq API key
+
+### Quick Deploy
 
 ```bash
-# Copy example env file and fill in your credentials
+# 1. Copy and configure environment variables
 cp .env.docker.example .env.docker
-# Edit .env.docker and add your DATABASE_URL and GROQ_API_KEY
 
-# Build and start
-docker compose --env-file .env.docker build
-docker compose --env-file .env.docker up -d
+# 2. Edit .env.docker and add:
+#    - DATABASE_URL (your PostgreSQL connection string)
+#    - GROQ_API_KEY (from https://console.groq.com)
+
+# 3. Build and start all services
+docker compose --env-file .env.docker up -d --build
+
+# 4. Check status
 docker compose ps
+
+# 5. View logs
 docker compose logs -f
+
+# 6. Stop services
 docker compose down
 ```
 
 ### Access the Application
-- **Frontend**: http://localhost
-- **Backend API**: http://localhost:3001
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:3001/api
+- **Health Check**: http://localhost:3001/api/health
 
 ## Testing
 
