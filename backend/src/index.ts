@@ -18,7 +18,8 @@ app.use(cors({
     'http://localhost:3000',
     'http://localhost:3002',
     'http://frontend:3000',
-    process.env.FRONTEND_URL || ''
+    process.env.FRONTEND_URL || '',
+    /\.vercel\.app$/  // Allow all Vercel deployments
   ].filter(Boolean),
   credentials: true,
 }));
