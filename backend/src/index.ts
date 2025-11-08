@@ -46,12 +46,13 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
-// Export for Vercel serverless
-export default app;
-
 // Only listen if not in Vercel environment
 if (process.env.VERCEL !== '1') {
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);
   });
 }
+
+// Export for Vercel serverless
+module.exports = app;
+export default app;
