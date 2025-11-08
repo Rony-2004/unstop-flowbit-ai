@@ -15,12 +15,12 @@ export const TopVendorsChart = ({ data, loading }: TopVendorsChartProps) => {
     return (
       <Card className="border-0 shadow-sm">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold">Spend by Vendor (Top 10)</CardTitle>
-          <p className="text-sm text-muted-foreground">Vendor spend with cumulative percentage distribution.</p>
+          <CardTitle className="text-base font-semibold text-gray-900">Spend by Vendor (Top 10)</CardTitle>
+          <p className="text-xs text-gray-500">Vendor spend with cumulative percentage distribution</p>
         </CardHeader>
         <CardContent>
           <div className="h-[320px] flex items-center justify-center">
-            <div className="animate-pulse text-muted-foreground">Loading...</div>
+            <div className="animate-pulse text-gray-500">Loading...</div>
           </div>
         </CardContent>
       </Card>
@@ -31,12 +31,12 @@ export const TopVendorsChart = ({ data, loading }: TopVendorsChartProps) => {
     return (
       <Card className="border-0 shadow-sm">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold">Spend by Vendor (Top 10)</CardTitle>
-          <p className="text-sm text-muted-foreground">Vendor spend with cumulative percentage distribution.</p>
+          <CardTitle className="text-base font-semibold text-gray-900">Spend by Vendor (Top 10)</CardTitle>
+          <p className="text-xs text-gray-500">Vendor spend with cumulative percentage distribution</p>
         </CardHeader>
         <CardContent>
           <div className="h-[320px] flex items-center justify-center">
-            <div className="text-muted-foreground">No vendor data available</div>
+            <div className="text-gray-500">No vendor data available</div>
           </div>
         </CardContent>
       </Card>
@@ -62,8 +62,8 @@ export const TopVendorsChart = ({ data, loading }: TopVendorsChartProps) => {
   return (
     <Card className="border-0 shadow-sm">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold">Spend by Vendor (Top 10)</CardTitle>
-        <p className="text-sm text-muted-foreground">Vendor spend with cumulative percentage distribution.</p>
+        <CardTitle className="text-base font-semibold text-gray-900">Spend by Vendor (Top 10)</CardTitle>
+        <p className="text-xs text-gray-500">Vendor spend with cumulative percentage distribution</p>
       </CardHeader>
       <CardContent className="pt-2">
         <div className="space-y-2">
@@ -73,7 +73,7 @@ export const TopVendorsChart = ({ data, loading }: TopVendorsChartProps) => {
             return (
               <div key={index} className="relative group">
                 <div className="flex items-center gap-3">
-                  <span className="text-xs text-gray-700 font-medium text-right w-36 flex-shrink-0" title={vendor.vendorName}>
+                  <span className="text-xs text-gray-700 font-medium text-right w-44 flex-shrink-0" title={vendor.vendorName}>
                     {vendor.vendorName}
                   </span>
                   <div className="flex-1 relative h-5">
@@ -102,7 +102,7 @@ export const TopVendorsChart = ({ data, loading }: TopVendorsChartProps) => {
         </div>
         
         {/* X-axis labels */}
-        <div className="flex justify-between mt-2 text-xs text-gray-500 pl-40">
+        <div className="flex justify-between mt-2 text-xs text-gray-500 pl-48">
           <span>€0k</span>
           <span>€{(maxSpend / 4000).toFixed(0)}k</span>
           <span>€{(maxSpend / 2000).toFixed(0)}k</span>

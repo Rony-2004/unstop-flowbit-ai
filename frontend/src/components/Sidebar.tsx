@@ -1,10 +1,11 @@
 'use client';
 
-import { LayoutDashboard, FileText, Folder, Building2, Users, Settings, MessageSquare } from "lucide-react";
+import { LayoutDashboard, FileText, Folder, Building2, Users, Settings, MessageSquare, Receipt } from "lucide-react";
 import { NavLink } from "./NavLink";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard", enabled: true },
+  { icon: Receipt, label: "Invoices", path: "/invoices", enabled: true },
   { icon: MessageSquare, label: "Chat with Data", path: "/chat", enabled: true },
   { icon: FileText, label: "Invoice", path: "/invoice", enabled: false },
   { icon: Folder, label: "Other files", path: "/files", enabled: false },
@@ -18,10 +19,10 @@ export const Sidebar = () => {
     <aside className="w-64 min-h-screen bg-white border-r border-gray-200 p-6">
       <div className="flex items-center gap-2 mb-8">
         <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-          <span className="text-white font-bold text-sm">B</span>
+          <span className="text-white font-bold text-sm">F</span>
         </div>
         <div>
-          <h1 className="font-bold text-gray-900">Buchhaltung</h1>
+          <h1 className="font-bold text-gray-900">FLOWBIT</h1>
           <p className="text-xs text-gray-500">by Flowbit AI</p>
         </div>
       </div>

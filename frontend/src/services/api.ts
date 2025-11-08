@@ -48,6 +48,11 @@ export interface ChatResponse {
   rowCount: number;
 }
 
+export interface PaymentStatus {
+  status: string;
+  count: number;
+}
+
 class ApiService {
   private api = axios.create({
     baseURL: API_BASE_URL,
@@ -97,18 +102,30 @@ class ApiService {
     return response.data;
   }
 
-  getInvoices = async (page: number = 1, limit: number = 10, search?: string): Promise<{
+  getPaymentStatus = async (): Promise<PaymentStatus[]> => {
+    const response = await this.api.get('/payment-status');
+    return response.data;
+  }
+
+  getInvoices = async (
+    page: number = 1, 
+    limit: number = 10, 
+    search?: string, 
+    status?: string
+  ): Promise<{
     invoices: Invoice[];
     total: number;
-    page: number;
-    totalPages: number;
   }> => {
+    const offset = (page - 1) * limit;
     const params = new URLSearchParams({
-      page: page.toString(),
       limit: limit.toString(),
+      offset: offset.toString(),
     });
     if (search) {
       params.append('search', search);
+    }
+    if (status) {
+      params.append('status', status);
     }
     const response = await this.api.get(`/invoices?${params}`);
     return response.data;
@@ -116,6 +133,15 @@ class ApiService {
 
   chatWithData = async (query: string): Promise<ChatResponse> => {
     const response = await this.api.post('/chat-with-data', { query });
+    return response.data;
+  }
+
+  deleteInvoice = async (invoiceId: string): Promise<void> => {
+    await this.api.delete(`/invoices/${invoiceId}`);
+  }
+
+  updateInvoice = async (invoiceId: string, data: Partial<Invoice>): Promise<Invoice> => {
+    const response = await this.api.put(`/invoices/${invoiceId}`, data);
     return response.data;
   }
 }

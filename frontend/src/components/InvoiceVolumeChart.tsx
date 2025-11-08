@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 interface InvoiceTrend {
   month: string;
@@ -17,8 +17,8 @@ export const InvoiceVolumeChart = ({ data, loading }: InvoiceVolumeChartProps) =
     return (
       <Card className="border-0 shadow-sm">
         <CardHeader>
-          <CardTitle className="text-base font-semibold text-gray-900">Invoice Volume + Value Trend</CardTitle>
-          <p className="text-xs text-gray-500">Invoice count and total spend over 12 months</p>
+          <CardTitle className="text-base font-semibold text-gray-900">Monthly Volume vs Value</CardTitle>
+          <p className="text-xs text-gray-500">Invoice count and total value by month</p>
         </CardHeader>
         <CardContent>
           <div className="h-[320px] flex items-center justify-center">
@@ -32,33 +32,32 @@ export const InvoiceVolumeChart = ({ data, loading }: InvoiceVolumeChartProps) =
   return (
     <Card className="border-0 shadow-sm">
       <CardHeader>
-        <CardTitle className="text-base font-semibold text-gray-900">Invoice Volume + Value Trend</CardTitle>
-        <p className="text-xs text-gray-500">Invoice count and total spend over 12 months</p>
+        <CardTitle className="text-base font-semibold text-gray-900">Monthly Volume vs Value</CardTitle>
+        <p className="text-xs text-gray-500">Invoice count and total value by month</p>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={320}>
-          <AreaChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-            <defs>
-              <linearGradient id="colorVolume" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
-                <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
-              </linearGradient>
-              <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.2}/>
-                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-              </linearGradient>
-            </defs>
+          <ComposedChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
             <XAxis
               dataKey="month"
               tick={{ fill: "#6b7280", fontSize: 11 }}
-              stroke="#d1d5db"
               axisLine={false}
+              tickLine={false}
             />
             <YAxis
+              yAxisId="left"
               tick={{ fill: "#6b7280", fontSize: 11 }}
-              stroke="#d1d5db"
               axisLine={false}
+              tickLine={false}
+            />
+            <YAxis
+              yAxisId="right"
+              orientation="right"
+              tick={{ fill: "#6b7280", fontSize: 11 }}
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={(value) => `€${(value / 1000).toFixed(0)}k`}
             />
             <Tooltip
               contentStyle={{
@@ -67,28 +66,33 @@ export const InvoiceVolumeChart = ({ data, loading }: InvoiceVolumeChartProps) =
                 borderRadius: "8px",
                 fontSize: "12px"
               }}
+              formatter={(value: number, name: string) => {
+                if (name === "Invoice Count") return [value, name];
+                return [`€${value.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`, "Total Value (EUR)"];
+              }}
             />
             <Legend 
-              wrapperStyle={{ fontSize: "12px" }}
-              iconType="circle"
+              wrapperStyle={{ fontSize: "12px", paddingTop: "10px" }}
+              iconType="line"
             />
-            <Area
-              type="monotone"
+            <Bar
+              yAxisId="left"
               dataKey="volume"
-              stroke="#6366f1"
-              strokeWidth={2}
-              fill="url(#colorVolume)"
-              name="Invoice count"
+              fill="#8b5cf6"
+              radius={[4, 4, 0, 0]}
+              maxBarSize={40}
+              name="Invoice Count"
             />
-            <Area
+            <Line
+              yAxisId="right"
               type="monotone"
               dataKey="value"
-              stroke="#3b82f6"
+              stroke="#10b981"
               strokeWidth={2}
-              fill="url(#colorValue)"
-              name="Total Spend"
+              dot={{ fill: "#10b981", r: 4 }}
+              name="Total Value (EUR)"
             />
-          </AreaChart>
+          </ComposedChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>

@@ -20,7 +20,7 @@ export const CashOutflowChart = ({ data, loading }: CashOutflowChartProps) => {
           <p className="text-xs text-gray-500">Expected payment obligations grouped by due date range</p>
         </CardHeader>
         <CardContent>
-          <div className="h-[280px] flex items-center justify-center">
+          <div className="h-[240px] flex items-center justify-center">
             <div className="animate-pulse text-gray-500">Loading...</div>
           </div>
         </CardContent>
@@ -40,7 +40,7 @@ export const CashOutflowChart = ({ data, loading }: CashOutflowChartProps) => {
         <p className="text-xs text-gray-500">Expected payment obligations grouped by due date range</p>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={280}>
+        <ResponsiveContainer width="100%" height={240}>
           <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
             <XAxis

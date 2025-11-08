@@ -16,6 +16,7 @@ const PORT = parseInt(process.env.PORT || '3001', 10);
 app.use(cors({
   origin: [
     'http://localhost:3000',
+    'http://localhost:3002',
     'http://frontend:3000',
     process.env.FRONTEND_URL || ''
   ].filter(Boolean),

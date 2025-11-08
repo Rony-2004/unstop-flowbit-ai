@@ -22,7 +22,7 @@ export const SpendByCategoryChart = ({ data, loading }: SpendByCategoryChartProp
           <p className="text-xs text-gray-500">Distribution of spending across different categories</p>
         </CardHeader>
         <CardContent>
-          <div className="h-[280px] flex items-center justify-center">
+          <div className="h-[240px] flex items-center justify-center">
             <div className="animate-pulse text-gray-500">Loading...</div>
           </div>
         </CardContent>
@@ -45,14 +45,14 @@ export const SpendByCategoryChart = ({ data, loading }: SpendByCategoryChartProp
         <p className="text-xs text-gray-500">Distribution of spending across different categories</p>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={200}>
+        <ResponsiveContainer width="100%" height={160}>
           <PieChart>
             <Pie
               data={chartData}
               cx="50%"
               cy="50%"
-              innerRadius={60}
-              outerRadius={85}
+              innerRadius={50}
+              outerRadius={75}
               paddingAngle={3}
               dataKey="value"
             >
@@ -70,7 +70,7 @@ export const SpendByCategoryChart = ({ data, loading }: SpendByCategoryChartProp
             />
           </PieChart>
         </ResponsiveContainer>
-        <div className="mt-4 space-y-2">
+        <div className="mt-3 space-y-2">
           {chartData.map((item, index) => (
             <div key={index} className="flex items-center justify-between">
               <div className="flex items-center gap-2">

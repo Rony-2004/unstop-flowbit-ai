@@ -8,10 +8,14 @@ import { SpendByCategoryChart } from "@/components/SpendByCategoryChart";
 import { CashOutflowChart } from "@/components/CashOutflowChart";
 import { InvoicesByVendorTable } from "@/components/InvoicesByVendorTable";
 import { TopVendorsChart } from "@/components/TopVendorsChart";
+import { RoleSwitcher } from "@/components/RoleSwitcher";
+import { useAuth } from "@/contexts/AuthContext";
 import { apiService } from "@/services/api";
 
 export default function DashboardPage() {
-  const { data: stats, isLoading: statsLoading, error: statsError } = useQuery({
+  const { user } = useAuth();
+
+  const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ['stats'],
     queryFn: apiService.getStats,
     retry: 3,
@@ -70,10 +74,13 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between">
             <h1 className="text-lg sm:text-xl font-semibold text-gray-800">Dashboard</h1>
             <div className="flex items-center gap-2 sm:gap-3">
+              <RoleSwitcher />
               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-600 flex items-center justify-center">
-                <span className="text-white text-xs sm:text-sm font-medium">MA</span>
+                <span className="text-white text-xs sm:text-sm font-medium">
+                  {user?.name.split(' ').map(n => n[0]).join('')}
+                </span>
               </div>
-              <span className="hidden sm:block text-sm font-medium text-gray-700">Mowazzem Uddin Ahmed</span>
+              <span className="hidden sm:block text-sm font-medium text-gray-700">{user?.name}</span>
             </div>
           </div>
         </div>

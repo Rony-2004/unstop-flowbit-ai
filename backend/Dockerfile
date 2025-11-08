@@ -3,22 +3,21 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Install build dependencies
-RUN apk add --no-cache python3 make g++
+# Install build dependencies including openssl for Prisma
+RUN apk add --no-cache python3 make g++ openssl
 
 # Copy package files
 COPY package*.json ./
 COPY prisma ./prisma/
 
-# Install dependencies with proper cache handling
-RUN npm ci --legacy-peer-deps --ignore-scripts && \
-    npm rebuild esbuild --legacy-peer-deps
-
-# Copy source code
-COPY . .
+# Install all dependencies
+RUN npm ci --legacy-peer-deps
 
 # Generate Prisma Client
 RUN npx prisma generate
+
+# Copy source code
+COPY . .
 
 # Build TypeScript
 RUN npm run build
@@ -31,16 +30,16 @@ WORKDIR /app
 # Install runtime dependencies
 RUN apk add --no-cache openssl
 
-# Copy package files
+# Copy package files and Prisma schema
 COPY package*.json ./
 COPY prisma ./prisma/
 
-# Install production dependencies only
-RUN npm ci --legacy-peer-deps --omit=dev --ignore-scripts && \
-    npm rebuild --legacy-peer-deps
+# Install production dependencies
+RUN npm ci --legacy-peer-deps --omit=dev
 
-# Generate Prisma Client in production
-RUN npx prisma generate
+# Copy Prisma Client from builder
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
 # Copy built application
 COPY --from=builder /app/dist ./dist
